@@ -1,8 +1,11 @@
 -- My cutscenes use a lot of animations / sounds, and I really did not want a
--- dramatic scene to randomly freeze because Roblox decided to load something late.
+-- dramatic scene to randomly get delayed because Roblox decided to load something late.
 --
 -- So this service reads the same scene tables I already use for authoring,
 -- finds the assets mentioned inside them, and preloads them automatically.
+-- It also receives asset references from cutscene service to preload the specific
+-- scene assets only. Instead of preloading a large dump, it loads the scenes
+-- consecutively to preserve memory. 
 
 local assetPreloadService = {}
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -11,7 +14,7 @@ local animationsFolder = replicatedStorage.Animations
 local soundsFolder = replicatedStorage.Sounds
 local cameraAnimationFolder = animationsFolder.Camera
 
--- These let me skip work I've already done.
+-- These let me skip assets that have already been preloaded.
 local preloadedAssets = {}
 local preloadedScenes = {}
 
@@ -61,6 +64,7 @@ local function collectSounds(data, assets, seen)
 
     -- My scene-table naming is useful here. Anything with "Sound" in the key is
     -- something this service should inspect, even if it is nested pretty deep.
+    -- This saves a lot of time as I don't have to rereference sounds during each scene table pass.
     for key, value in pairs(data) do
         if type(key) == "string" and string.find(key, "Sound") then
             if type(value) == "table" then
@@ -79,6 +83,8 @@ local function collectSounds(data, assets, seen)
     end
 end
 
+-- This was made because I noticed writting out each animation reference
+-- was a waste of time
 local function collectAllAnimationNames(data, names, seen)
     if type(data) ~= "table" then
         return
