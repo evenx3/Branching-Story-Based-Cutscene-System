@@ -4,7 +4,9 @@ This is a small collection of code from *The Valley Ripper*, a branching multipl
 
 I didn't upload the entire game because there are a ton of scripts, UI objects, animations, sounds, maps, RemoteEvents, etc. This repo is basically the parts that best show how I like to structure stuff.
 
-Also: the code files have comments explaining what I was trying to do. They're not meant to read like official documentation lol.
+Also: the code files have comments explaining what I was trying to do. They're not meant to read like official documentation.
+
+Here’s a short explanation of my system here: https://m.youtube.com/watch?v=snvaNUCbiRY&ra=m
 
 ## AI use disclaimer
 
